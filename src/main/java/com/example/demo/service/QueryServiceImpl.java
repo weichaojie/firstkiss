@@ -1,10 +1,12 @@
 package com.example.demo.service;
 
-import com.example.demo.config.RedisConfig;
 import com.example.demo.entity.ExpandData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -52,26 +54,44 @@ public class QueryServiceImpl implements IQueryService {
 
     @Override
     public int getValueByName(String name) {
+        int value = Integer.MAX_VALUE;
         System.out.println("Entering QueryServiceImpl:getValueByName;input is " + name);
-        Random random = new Random();
-        int value = random.nextInt();
-        return value;
+        try {
+            HashOperations ops = redisTemplate.opsForHash();
+            Object obj = ops.get("k1", name);
+            value = Integer.parseInt(obj.toString());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            return value;
+        }
     }
 
     @Override
     public ExpandData getValueById(int id) {
         System.out.println("Entering QueryServiceImpl:getValueById;input is " + id);
-        Random random = new Random();
         ExpandData data = new ExpandData();
         data.setId(id);
-        data.setName("上海");
-        data.setValue(random.nextInt());
-
         HashOperations ops = redisTemplate.opsForHash();
-        ops.put("k1", "h1", "v100");
-        Object obj = ops.get("k1","h1");
+        Object obj = ops.get("k1", "h1");
+        data.setName(obj.toString());
+        data.setValue(Integer.valueOf(obj.toString()));
         System.out.println(obj);
         return data;
+    }
+
+    @Override
+    public HttpStatus addData(String name, int value) {
+
+//        BoundValueOperations boundOps = redisTemplate.boundValueOps(name);
+//        boundOps.set(Integer.toString(value), value);
+
+        HashOperations ops = redisTemplate.opsForHash();
+        ops.put("k1", name, Integer.toString(value));
+
+        return HttpStatus.OK;
     }
 
 }
