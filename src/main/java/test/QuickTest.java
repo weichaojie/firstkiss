@@ -3,6 +3,7 @@ package test;
 import com.example.demo.entity.ListNode;
 import com.example.demo.util.SearchUtil;
 import com.example.demo.util.SortUtil;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import java.util.*;
 
@@ -37,8 +38,31 @@ public class QuickTest {
 //        wordDict.add("ca");
 //        wordDict.add("rs");
 //        System.out.println(quickTest.wordBreak(s, wordDict));
+
+        int[] nums = {0};
+        quickTest.subsets(nums);
     }
-    
+
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> results = new LinkedList<>();
+        results.add(new LinkedList<>());
+        for (int num : nums) {
+            List<List<Integer>> temp = new LinkedList<>();
+            for (int i = 0; i < results.size(); i++) {
+                temp.add(new LinkedList<>(results.get(i)));
+            }
+
+            for (int i = 0; i < temp.size(); i++) {
+                List<Integer> subList = temp.get(i);
+                subList.add(num);
+                results.add(subList);
+            }
+
+        }
+        return results;
+    }
+
+
     public boolean wordBreak(String s, List<String> wordDict) {
         Collections.sort(wordDict);
         StringBuilder sb = new StringBuilder(s);

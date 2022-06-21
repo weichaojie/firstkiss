@@ -1,8 +1,11 @@
-class ListNode{
-    public val;
+package com.example.demo.entity;
+
+public class ListNode{
+    public int val;
     public ListNode next;
-    ListNode(int val){
-        this.val=val;
-        next=null;
+
+    public ListNode(int val) {
+        this.val = val;
+        next = null;
     }
 }
