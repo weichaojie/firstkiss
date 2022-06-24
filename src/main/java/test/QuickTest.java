@@ -39,8 +39,8 @@ public class QuickTest {
 //        wordDict.add("rs");
 //        System.out.println(quickTest.wordBreak(s, wordDict));
 
-        int[] nums = {0};
-        quickTest.subsets(nums);
+        int[] nums = {0,1,2};
+        System.out.println(quickTest.subsets(nums));
     }
 
     public List<List<Integer>> subsets(int[] nums) {
