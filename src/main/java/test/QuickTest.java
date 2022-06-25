@@ -1,5 +1,7 @@
 package test;
 
+import org.springframework.data.util.Pair;
+
 import java.util.*;
 
 public class QuickTest {
@@ -34,7 +36,66 @@ public class QuickTest {
 //        wordDict.add("rs");
 //        System.out.println(quickTest.wordBreak(s, wordDict));
 
-        System.out.println(quickTest.getZipped("2abcc"));
+//        System.out.println(quickTest.getZipped("2abcc"));
+
+        List<Pair<Integer, Integer>> inputDirs = new ArrayList<>();
+        inputDirs.add(Pair.of(8, 6));
+        inputDirs.add(Pair.of(10, 8));
+        inputDirs.add(Pair.of(6, 0));
+        inputDirs.add(Pair.of(20, 8));
+        inputDirs.add(Pair.of(2, 6));
+        System.out.println(quickTest.getLeftDir(inputDirs, 8));
+    }
+
+    Set<Integer> getLeftDir(List<Pair<Integer, Integer>> inputDirs, int deleteDir) {
+        List<Pair<Integer, Integer>> leftResults = new ArrayList<>();
+        Set<Integer> toBeDeleted = new HashSet<>();
+        toBeDeleted.add(deleteDir);
+        for (int i = 0; i < inputDirs.size(); i++) {
+            Pair<Integer, Integer> pair = inputDirs.get(i);
+            if (pair.getSecond() == deleteDir) {
+                toBeDeleted.add(pair.getFirst());
+            }
+        }
+
+        for (int i = 0; i < inputDirs.size(); i++) {
+            for (int j = 0; j < inputDirs.size(); j++) {
+                Pair<Integer, Integer> pair = inputDirs.get(j);
+                if (toBeDeleted.contains(pair.getSecond())) {
+                    toBeDeleted.add(pair.getFirst());
+                }
+            }
+        }
+
+        for (int i = 0; i < inputDirs.size(); i++) {
+            Pair<Integer, Integer> pair = inputDirs.get(i);
+            if (toBeDeleted.contains(pair.getFirst()) && pair.getSecond() != deleteDir) {
+                leftResults.add(Pair.of(Integer.MIN_VALUE, pair.getSecond()));
+            } else if (toBeDeleted.contains(pair.getSecond())) {
+                continue;
+            } else if (pair.getSecond() == 0) {
+                leftResults.add(Pair.of(pair.getFirst(), 0));
+            } else {
+                leftResults.add(Pair.of(pair.getFirst(), pair.getSecond()));
+            }
+        }
+
+        Set<Integer> leftDir=new HashSet<>();
+        for (int i = 0; i < leftResults.size(); i++) {
+            Pair<Integer,Integer> pair=leftResults.get(i);
+            if( pair.getFirst()==Integer.MIN_VALUE){
+                leftDir.add(pair.getSecond());
+            }
+            else if( pair.getSecond()==0){
+                leftDir.add(pair.getFirst());
+            }
+            else{
+                leftDir.add(pair.getFirst());
+                leftDir.add(pair.getSecond());
+            }
+        }
+
+        return leftDir;
     }
 
     public boolean isNumber(char input) {
@@ -82,7 +143,7 @@ public class QuickTest {
                 StringBuilder sb = new StringBuilder();
                 sb.append(current);
 
-                int j = i+1;
+                int j = i + 1;
                 for (; j < strInput.length(); j++) {
                     if (isAlphabet(strInput.charAt(j))) {
                         nextAlphabet = strInput.charAt(j);
