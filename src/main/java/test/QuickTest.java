@@ -49,6 +49,29 @@ public class QuickTest {
         System.out.println(quickTest.decodeString("100[leetcode]"));
     }
 
+    // 2,3,5
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> results = new ArrayList<>();
+        Arrays.sort(candidates);
+        List<Integer> temp = new ArrayList<>();
+        int sum = 0;
+        for (int i = candidates.length - 1; i >= 0; i--) {
+            sum += candidates[i];
+
+            if (sum < target) {
+                ;
+            } else if (sum > target) {
+                break;
+            } else {
+                temp.add(candidates[i]);
+                results.add(temp);
+
+            }
+        }
+
+        return results;
+    }
+
     public int getNumber(StringBuilder sb, int lastIndex) {
         int number = 0;
         StringBuilder sbTemp = new StringBuilder();
@@ -96,9 +119,6 @@ public class QuickTest {
 
         return sb.toString();
     }
-
-    // acc  acc  acc
-
 
     Set<Integer> getLeftDir(List<Pair<Integer, Integer>> inputDirs, int deleteDir) {
         List<Pair<Integer, Integer>> leftResults = new ArrayList<>();
