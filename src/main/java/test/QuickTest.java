@@ -1,9 +1,6 @@
 package test;
 
-import com.example.demo.entity.ListNode;
-import com.example.demo.util.SearchUtil;
-import com.example.demo.util.SortUtil;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import jdk.internal.net.http.common.Pair;
 
 import java.util.*;
 
@@ -41,8 +38,78 @@ public class QuickTest {
 
 //        int[] nums = {0,1,2};
 //        System.out.println(quickTest.subsets(nums));
-        System.out.println(quickTest.findMatchedString("abc","qcwab"));
+        System.out.println(quickTest.findMatchedString("abc", "qcwab"));
 
+    }
+
+    public boolean isNumber(char input) {
+        if (input >= '0' && input <= '9') {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isAlphabet(char input) {
+        if (input >= 'a' && input <= 'z') {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isLegal(char input) {
+        if (isNumber(input)) {
+            return true;
+        } else if (isAlphabet(input)) {
+            return true;
+        }
+        return false;
+    }
+
+    public String getZipped(String strInput) {
+        String error = new String("!error");
+
+        // 排除特殊字符串
+        for (int i = 0; i < strInput.length(); i++) {
+            if (!isLegal(strInput.charAt(i))) {
+                return error;
+            }
+        }
+
+        StringBuilder unzipped = new StringBuilder();
+        for (int i = 0; i < strInput.length(); ) {
+            char current = strInput.charAt(i);
+            if (isAlphabet(current)) {
+                unzipped.append(current);
+                i++;
+            } else if (isNumber(current)) {
+
+                char nextAlphabet = '@';
+                StringBuilder sb = new StringBuilder();
+                sb.append(current);
+
+                int j = i;
+                for (; j < strInput.length(); j++) {
+                    if (isAlphabet(strInput.charAt(j))) {
+                        nextAlphabet = strInput.charAt(j);
+                        break;
+                    } else if (isNumber(strInput.charAt(j))) {
+                        sb.append(strInput.charAt(j));
+                    }
+
+                }
+                i = j;
+                if (nextAlphabet == '@') {
+                    return error;
+                }
+                int charNumber = Integer.parseInt(sb.toString());
+                if (charNumber <= 2) {
+                    return error;
+                }
+            }
+        }
+
+
+        return unzipped.toString();
     }
 
     public int[] getStringEncoded(String strInput) {
@@ -60,7 +127,7 @@ public class QuickTest {
         for (int i = 0; i <= strDest.length() - lenSrc; i++) {
             String currentStr = strDest.substring(i, i + lenSrc);
             int[] currentEncoded = getStringEncoded(currentStr);
-            if( Arrays.equals(currentEncoded, srcEncoded) ){
+            if (Arrays.equals(currentEncoded, srcEncoded)) {
                 return i;
             }
         }
