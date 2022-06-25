@@ -1,7 +1,5 @@
 package test;
 
-import jdk.internal.net.http.common.Pair;
-
 import java.util.*;
 
 public class QuickTest {
@@ -36,10 +34,7 @@ public class QuickTest {
 //        wordDict.add("rs");
 //        System.out.println(quickTest.wordBreak(s, wordDict));
 
-//        int[] nums = {0,1,2};
-//        System.out.println(quickTest.subsets(nums));
-        System.out.println(quickTest.findMatchedString("abc", "qcwab"));
-
+        System.out.println(quickTest.getZipped("2abcc"));
     }
 
     public boolean isNumber(char input) {
@@ -87,7 +82,7 @@ public class QuickTest {
                 StringBuilder sb = new StringBuilder();
                 sb.append(current);
 
-                int j = i;
+                int j = i+1;
                 for (; j < strInput.length(); j++) {
                     if (isAlphabet(strInput.charAt(j))) {
                         nextAlphabet = strInput.charAt(j);
@@ -105,9 +100,11 @@ public class QuickTest {
                 if (charNumber <= 2) {
                     return error;
                 }
+                for (int k = 0; k < charNumber - 1; k++) {
+                    unzipped.append(nextAlphabet);
+                }
             }
         }
-
 
         return unzipped.toString();
     }
