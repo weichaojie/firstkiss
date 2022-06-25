@@ -38,14 +38,67 @@ public class QuickTest {
 
 //        System.out.println(quickTest.getZipped("2abcc"));
 
-        List<Pair<Integer, Integer>> inputDirs = new ArrayList<>();
-        inputDirs.add(Pair.of(8, 6));
-        inputDirs.add(Pair.of(10, 8));
-        inputDirs.add(Pair.of(6, 0));
-        inputDirs.add(Pair.of(20, 8));
-        inputDirs.add(Pair.of(2, 6));
-        System.out.println(quickTest.getLeftDir(inputDirs, 8));
+//        List<Pair<Integer, Integer>> inputDirs = new ArrayList<>();
+//        inputDirs.add(Pair.of(8, 6));
+//        inputDirs.add(Pair.of(10, 8));
+//        inputDirs.add(Pair.of(6, 0));
+//        inputDirs.add(Pair.of(20, 8));
+//        inputDirs.add(Pair.of(2, 6));
+//        System.out.println(quickTest.getLeftDir(inputDirs, 8));
+
+        System.out.println(quickTest.decodeString("100[leetcode]"));
     }
+
+    public int getNumber(StringBuilder sb, int lastIndex) {
+        int number = 0;
+        StringBuilder sbTemp = new StringBuilder();
+        for (int i = lastIndex - 1; i >= 0; i--) {
+            char current = sb.charAt(i);
+            if (current >= '0' && current <= '9') {
+                sbTemp.append(current);
+            } else {
+                break;
+            }
+        }
+        sbTemp.reverse();
+        number = Integer.parseInt(sbTemp.toString());
+        return number;
+    }
+
+    public int getNumberSpace(int number) {
+        int count = 0;
+        while (number != 0) {
+            number /= 10;
+            ++count;
+        }
+        return count;
+    }
+
+    public String decodeString(String s) {
+        int len = s.length();
+
+        StringBuilder sb = new StringBuilder(s);
+        while (true) {
+            int lastIndex = sb.lastIndexOf("[");
+            if (lastIndex == -1) {
+                break;
+            }
+            int matchedIndex = sb.indexOf("]", lastIndex);
+            String subtring = sb.substring(lastIndex + 1, matchedIndex);
+            int number = getNumber(sb, lastIndex);
+            StringBuilder sbTemp = new StringBuilder();
+            for (int i = 0; i < number; i++) {
+                sbTemp.append(subtring);
+            }
+            sb = sb.delete(lastIndex - getNumberSpace(number), matchedIndex + 1);
+            sb = sb.insert(lastIndex - getNumberSpace(number), sbTemp);
+        }
+
+        return sb.toString();
+    }
+
+    // acc  acc  acc
+
 
     Set<Integer> getLeftDir(List<Pair<Integer, Integer>> inputDirs, int deleteDir) {
         List<Pair<Integer, Integer>> leftResults = new ArrayList<>();
@@ -80,16 +133,14 @@ public class QuickTest {
             }
         }
 
-        Set<Integer> leftDir=new HashSet<>();
+        Set<Integer> leftDir = new HashSet<>();
         for (int i = 0; i < leftResults.size(); i++) {
-            Pair<Integer,Integer> pair=leftResults.get(i);
-            if( pair.getFirst()==Integer.MIN_VALUE){
+            Pair<Integer, Integer> pair = leftResults.get(i);
+            if (pair.getFirst() == Integer.MIN_VALUE) {
                 leftDir.add(pair.getSecond());
-            }
-            else if( pair.getSecond()==0){
+            } else if (pair.getSecond() == 0) {
                 leftDir.add(pair.getFirst());
-            }
-            else{
+            } else {
                 leftDir.add(pair.getFirst());
                 leftDir.add(pair.getSecond());
             }
