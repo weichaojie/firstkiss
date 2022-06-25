@@ -39,8 +39,32 @@ public class QuickTest {
 //        wordDict.add("rs");
 //        System.out.println(quickTest.wordBreak(s, wordDict));
 
-        int[] nums = {0,1,2};
-        System.out.println(quickTest.subsets(nums));
+//        int[] nums = {0,1,2};
+//        System.out.println(quickTest.subsets(nums));
+        System.out.println(quickTest.findMatchedString("abc","qcwab"));
+
+    }
+
+    public int[] getStringEncoded(String strInput) {
+        int[] results = new int[256];
+        int len = strInput.length();
+        for (int i = 0; i < len; i++) {
+            results[strInput.charAt(i) - 'a']++;
+        }
+        return results;
+    }
+
+    public int findMatchedString(String strSrc, String strDest) {
+        int[] srcEncoded = getStringEncoded(strSrc);
+        int lenSrc = strSrc.length();
+        for (int i = 0; i <= strDest.length() - lenSrc; i++) {
+            String currentStr = strDest.substring(i, i + lenSrc);
+            int[] currentEncoded = getStringEncoded(currentStr);
+            if( Arrays.equals(currentEncoded, srcEncoded) ){
+                return i;
+            }
+        }
+        return -1;
     }
 
     public List<List<Integer>> subsets(int[] nums) {
