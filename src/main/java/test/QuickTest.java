@@ -46,35 +46,72 @@ public class QuickTest {
 //        inputDirs.add(Pair.of(2, 6));
 //        System.out.println(quickTest.getLeftDir(inputDirs, 8));
 
-        System.out.println(quickTest.decodeString("100[leetcode]"));
+        int[] nums = {2,7,6,3,5,1};
+        System.out.println(quickTest.combinationSum(nums, 9));
     }
 
     // 2,3,5
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> results = new ArrayList<>();
+
         Arrays.sort(candidates);
-        List<Integer> temp = new ArrayList<>();
-        for (int i = candidates.length - 1; i >= 0; i--) {
-            int sum = 0;
-            sum += candidates[i];
 
-            for (int j = i; j >= 0; j--) {
+        for (int j = 0; j < candidates.length; j++) {
 
+            List<Integer> tempExternal = new ArrayList<>();
+            tempExternal.add(candidates[j]);
+            if (getSum(tempExternal) == target) {
+                results.add(new ArrayList<>(tempExternal));
+                break;
+            }
+
+            List<Integer> tempInternal = new ArrayList<>();
+
+            for (int i = j; i < candidates.length; ) {
+                int current = candidates[i];
+                tempInternal.add(current);
+
+                int sum = getSum(tempExternal) + getSum(tempInternal);
                 if (sum < target) {
                     ;
                 } else if (sum > target) {
-                    break;
+                    int next = 0;
+                    if (i < candidates.length - 1) {
+                        next = candidates[i + 1];
+                    }
+                    while (getSum(tempExternal) + getSum(tempInternal) + next > target
+                            && !tempInternal.isEmpty()) {
+                        tempInternal.remove(tempInternal.size() - 1);
+                    }
+                    i++;
                 } else {
-                    temp.add(candidates[i]);
-                    results.add(temp);
-                    break;
+                    List<Integer> temp = new ArrayList<>(tempExternal);
+                    temp.addAll(new ArrayList<>(tempInternal));
+                    results.add(new ArrayList<>(temp));
+
+                    int next = 0;
+                    if (i < candidates.length - 1) {
+                        next = candidates[i + 1];
+                    }
+                    while (getSum(tempExternal) + getSum(tempInternal) + next != target
+                            && !tempInternal.isEmpty()) {
+                        tempInternal.remove(tempInternal.size() - 1);
+                    }
+                    i++;
                 }
 
             }
 
         }
-
         return results;
+    }
+
+    private int getSum(List<Integer> input) {
+        int sum = 0;
+        for (Integer value : input) {
+            sum += value;
+        }
+        return sum;
     }
 
     public int getNumber(StringBuilder sb, int lastIndex) {
