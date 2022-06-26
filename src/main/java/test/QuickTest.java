@@ -54,19 +54,24 @@ public class QuickTest {
         List<List<Integer>> results = new ArrayList<>();
         Arrays.sort(candidates);
         List<Integer> temp = new ArrayList<>();
-        int sum = 0;
         for (int i = candidates.length - 1; i >= 0; i--) {
+            int sum = 0;
             sum += candidates[i];
 
-            if (sum < target) {
-                ;
-            } else if (sum > target) {
-                break;
-            } else {
-                temp.add(candidates[i]);
-                results.add(temp);
+            for (int j = i; j >= 0; j--) {
+
+                if (sum < target) {
+                    ;
+                } else if (sum > target) {
+                    break;
+                } else {
+                    temp.add(candidates[i]);
+                    results.add(temp);
+                    break;
+                }
 
             }
+
         }
 
         return results;
