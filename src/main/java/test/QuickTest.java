@@ -1,5 +1,7 @@
 package test;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.data.util.Pair;
 
 import java.util.*;
@@ -50,9 +52,19 @@ public class QuickTest {
 //        inputDirs.add(Pair.of(2, 6));
 //        System.out.println(quickTest.getLeftDir(inputDirs, 8));
 
-        int[] nums = {2,7,6,3,5,1};
-        System.out.println(quickTest.combinationSum(nums, 9));
+        int[] nums = {2, 7, 6, 3, 5, 1};
+//        System.out.println(quickTest.combinationSum(nums, 9));
+
+        List<JSONObject> myJSonList = new ArrayList<>();
+        quickTest.pareMyObject("{a:1,b:2}", myJSonList);
     }
+
+    public void pareMyObject(String input, List<JSONObject> output) {
+        JSONObject object = JSON.parseObject(input);
+        System.out.println(object.toString());
+        output.add(new JSONObject(object));
+    }
+
 
     // 2,3,5
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
@@ -77,14 +89,12 @@ public class QuickTest {
 
                 int sum = getSum(tempExternal) + getSum(tempInternal);
                 if (sum < target) {
-                    ;
                 } else if (sum > target) {
                     int next = 0;
                     if (i < candidates.length - 1) {
                         next = candidates[i + 1];
                     }
-                    while (getSum(tempExternal) + getSum(tempInternal) + next > target
-                            && !tempInternal.isEmpty()) {
+                    while (getSum(tempExternal) + getSum(tempInternal) + next > target && !tempInternal.isEmpty()) {
                         tempInternal.remove(tempInternal.size() - 1);
                     }
                     i++;
@@ -97,8 +107,7 @@ public class QuickTest {
                     if (i < candidates.length - 1) {
                         next = candidates[i + 1];
                     }
-                    while (getSum(tempExternal) + getSum(tempInternal) + next != target
-                            && !tempInternal.isEmpty()) {
+                    while (getSum(tempExternal) + getSum(tempInternal) + next != target && !tempInternal.isEmpty()) {
                         tempInternal.remove(tempInternal.size() - 1);
                     }
                     i++;
@@ -216,30 +225,21 @@ public class QuickTest {
     }
 
     public boolean isNumber(char input) {
-        if (input >= '0' && input <= '9') {
-            return true;
-        }
-        return false;
+        return input >= '0' && input <= '9';
     }
 
     public boolean isAlphabet(char input) {
-        if (input >= 'a' && input <= 'z') {
-            return true;
-        }
-        return false;
+        return input >= 'a' && input <= 'z';
     }
 
     public boolean isLegal(char input) {
         if (isNumber(input)) {
             return true;
-        } else if (isAlphabet(input)) {
-            return true;
-        }
-        return false;
+        } else return isAlphabet(input);
     }
 
     public String getZipped(String strInput) {
-        String error = new String("!error");
+        String error = "!error";
 
         // 排除特殊字符串
         for (int i = 0; i < strInput.length(); i++) {
