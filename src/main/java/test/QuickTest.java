@@ -50,8 +50,51 @@ public class QuickTest {
 //        inputDirs.add(Pair.of(2, 6));
 //        System.out.println(quickTest.getLeftDir(inputDirs, 8));
 
-        int[] nums = {2,7,6,3,5,1};
-        System.out.println(quickTest.combinationSum(nums, 9));
+        int[] nums = {0, 3, 7, 2, 5, 8, 4, 6, 0, 1};
+//        System.out.println(quickTest.combinationSum(nums, 9));
+        System.out.println(quickTest.longestConsecutive(nums));
+    }
+
+    public int longestConsecutive(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        SortedSet<Integer> set = new TreeSet<Integer>();
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        Iterator<Integer> itr = set.iterator();
+        int max = 1;
+        int count = 1;
+        int preElement = Integer.MIN_VALUE;
+        while (itr.hasNext()) {
+            int current = itr.next();
+            if (current == preElement + 1) {
+                count++;
+                max = Math.max(max, count);
+            } else {
+                count = 1;
+            }
+            preElement = current;
+        }
+
+        return max;
+    }
+
+    public int findUnsortedSubarray(int[] nums) {
+
+        return -1;
+    }
+
+    /*
+    n=1,1
+    n=2,2
+    n=3,5
+    * */
+    public int numTrees(int n) {
+        int[] results = new int[n + 1];
+        return results[n];
     }
 
     // 2,3,5
