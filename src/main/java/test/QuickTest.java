@@ -2,6 +2,8 @@ package test;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.entity.ListNode;
+import com.example.demo.util.ListNodeUtil;
 import org.springframework.data.util.Pair;
 
 import java.util.*;
@@ -52,20 +54,139 @@ public class QuickTest {
 //        inputDirs.add(Pair.of(2, 6));
 //        System.out.println(quickTest.getLeftDir(inputDirs, 8));
 
-        int[] nums = {3, 3};
-        System.out.println(Arrays.toString(quickTest.twoSum(nums, 6)));
+        List<Integer> list = new ArrayList<>();
+        list.add(0);
+        list.add(1);
+        list.add(2);
+        list.add(4);
+        list.add(6);
+        list.add(5);
+        list.add(3);
+        System.out.println(findMedian(list));
+    }
+
+    public static int findMedian(List<Integer> arr) {
+        // Write your code here
+        Collections.sort(arr);
+        int len = arr.size();
+        int middleIndex = 0;
+        if (len % 2 == 0) {
+            middleIndex = len / 2 + 1;
+        } else {
+            middleIndex = len / 2;
+        }
+
+        return arr.get(middleIndex);
+    }
+
+    public static List<Integer> breakingRecords(List<Integer> scores) {
+        // Write your code here
+        int max = scores.get(0);
+        int min = scores.get(0);
+        int breakMaxCount = 0;
+        int breakMinCount = 0;
+        for (Integer score : scores) {
+            if (score > max) {
+                max = score;
+                breakMaxCount++;
+            }
+            if (score < min) {
+                min = score;
+                breakMinCount++;
+            }
+        }
+        List<Integer> results = new ArrayList<>();
+        results.add(breakMaxCount);
+        results.add(breakMinCount);
+        return results;
+    }
+
+    public static String timeConversion(String s) {
+        // Write your code here
+        String hourString = s.substring(0, 2);
+        int hourNumber = Integer.parseInt(hourString);
+
+        String PA = s.substring(s.length() - 2, s.length());
+        if (PA.compareTo("PM") == 0) {
+            if (hourNumber == 12) {
+                ;
+            } else {
+                hourNumber += 12;
+            }
+            hourNumber = hourNumber % 24;
+        } else if (PA.compareTo("AM") == 0) {
+            hourNumber = hourNumber % 12;
+        }
+
+        String leftTime = s.substring(2, s.length() - 2);
+        StringBuilder sb = new StringBuilder();
+        String newHour = String.format("%02d", hourNumber);
+        sb.append(newHour);
+        sb.append(leftTime);
+        return sb.toString();
+    }
+
+    public ListNode reverseList(ListNode head) {
+        if (head == null) {
+            return head;
+        }
+        ListNode dummyNode = new ListNode(Integer.MIN_VALUE);
+        dummyNode.next = head;
+        int size = ListNodeUtil.size(head);
+        int[] array = new int[size];
+
+        int serialNum = 1;
+        while (head != null) {
+            array[size - serialNum] = head.val;
+            head = head.next;
+            serialNum++;
+        }
+
+        ListNode result = ListNodeUtil.initListNode(array);
+        return result;
+    }
+
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummyNode = new ListNode(Integer.MIN_VALUE);
+        ListNode node = dummyNode;
+        while (list1 != null && list2 != null) {
+            if (list1.val <= list2.val) {
+                node.next = list1;
+                list1 = list1.next;
+            } else {
+                node.next = list2;
+                list2 = list2.next;
+            }
+
+            node = node.next;
+        }
+
+        while ((node != null) && (list1 != null || list2 != null)) {
+            if (list1 == null && list2 != null) {
+                node.next = list2;
+                list2 = list2.next;
+            }
+            if (list1 != null && list2 == null) {
+                node.next = list1;
+                list1 = list1.next;
+            }
+
+            node = node.next;
+        }
+
+        return dummyNode.next;
     }
 
     public int[] twoSum(int[] nums, int target) {
         int firstIndex = -1;
         int lastIndex = 0;
         int len = nums.length;
-        for (int i = 0; i < len - 1; i++) {
-            for (int j = len - 1; j > i; j--) {
-                if (nums[j] == target - nums[i]) {
-                    return new int[]{i, j};
-                }
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < len; i++) {
+            if (map.containsKey(target - nums[i])) {
+                return new int[]{map.get(target - nums[i]), i};
             }
+            map.put(nums[i], i);
         }
 
         return new int[]{firstIndex, lastIndex};
