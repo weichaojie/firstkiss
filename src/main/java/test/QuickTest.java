@@ -52,11 +52,23 @@ public class QuickTest {
 //        inputDirs.add(Pair.of(2, 6));
 //        System.out.println(quickTest.getLeftDir(inputDirs, 8));
 
-        int[] nums = {2, 7, 6, 3, 5, 1};
-//        System.out.println(quickTest.combinationSum(nums, 9));
+        int[] nums = {3, 3};
+        System.out.println(Arrays.toString(quickTest.twoSum(nums, 6)));
+    }
 
-        List<JSONObject> myJSonList = new ArrayList<>();
-        quickTest.pareMyObject("{a:1,b:2}", myJSonList);
+    public int[] twoSum(int[] nums, int target) {
+        int firstIndex = -1;
+        int lastIndex = 0;
+        int len = nums.length;
+        for (int i = 0; i < len - 1; i++) {
+            for (int j = len - 1; j > i; j--) {
+                if (nums[j] == target - nums[i]) {
+                    return new int[]{i, j};
+                }
+            }
+        }
+
+        return new int[]{firstIndex, lastIndex};
     }
 
     public void pareMyObject(String input, List<JSONObject> output) {
