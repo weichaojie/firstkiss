@@ -60,12 +60,12 @@ public class QuickTest {
         int firstIndex = -1;
         int lastIndex = 0;
         int len = nums.length;
-        for (int i = 0; i < len - 1; i++) {
-            for (int j = len - 1; j > i; j--) {
-                if (nums[j] == target - nums[i]) {
-                    return new int[]{i, j};
-                }
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < len; i++) {
+            if (map.containsKey(target - nums[i])) {
+                return new int[]{map.get(target - nums[i]), i};
             }
+            map.put(nums[i], i);
         }
 
         return new int[]{firstIndex, lastIndex};
