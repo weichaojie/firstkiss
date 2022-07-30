@@ -1,10 +1,141 @@
 package test;
 
+import com.example.demo.entity.ListNode;
+import com.example.demo.util.ListNodeUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class Solution {
+
+    public static void main(String[] args) {
+        List<Integer> list = new ArrayList<>();
+        list.add(63);
+        list.add(25);
+        list.add(73);
+        list.add(1);
+        list.add(98);
+        list.add(73);
+        list.add(56);
+        list.add(84);
+        list.add(86);
+        list.add(57);
+        list.add(16);
+        list.add(83);
+        list.add(8);
+        list.add(25);
+        list.add(81);
+        list.add(56);
+        list.add(9);
+        list.add(53);
+        list.add(98);
+        list.add(67);
+        list.add(99);
+        list.add(12);
+        list.add(83);
+        list.add(89);
+        list.add(80);
+        list.add(91);
+        list.add(39);
+        list.add(86);
+        list.add(76);
+        list.add(85);
+        list.add(74);
+        list.add(39);
+        list.add(25);
+        list.add(90);
+        list.add(59);
+        list.add(10);
+        list.add(94);
+        list.add(32);
+        list.add(44);
+        list.add(3);
+        list.add(89);
+        list.add(30);
+        list.add(27);
+        list.add(79);
+        list.add(46);
+        list.add(96);
+        list.add(27);
+        list.add(32);
+        list.add(18);
+        list.add(21);
+        list.add(92);
+        list.add(69);
+        list.add(81);
+        list.add(40);
+        list.add(40);
+        list.add(34);
+        list.add(68);
+        list.add(78);
+        list.add(24);
+        list.add(87);
+        list.add(42);
+        list.add(69);
+        list.add(23);
+        list.add(41);
+        list.add(78);
+        list.add(22);
+        list.add(6);
+        list.add(90);
+        list.add(99);
+        list.add(89);
+        list.add(50);
+        list.add(30);
+        list.add(20);
+        list.add(1);
+        list.add(43);
+        list.add(3);
+        list.add(70);
+        list.add(95);
+        list.add(33);
+        list.add(46);
+        list.add(44);
+        list.add(9);
+        list.add(69);
+        list.add(48);
+        list.add(33);
+        list.add(60);
+        list.add(65);
+        list.add(16);
+        list.add(82);
+        list.add(67);
+        list.add(61);
+        list.add(32);
+        list.add(21);
+        list.add(79);
+        list.add(75);
+        list.add(75);
+        list.add(13);
+        list.add(87);
+        list.add(70);
+        list.add(33);
+//        System.out.println(countingSort(list));
+
+        ListNode head = new ListNode(7);
+        head.next = new ListNode(3);
+        head.next.next = new ListNode(2);
+        head.next.next.next = new ListNode(1);
+        head.next.next.next.next = new ListNode(0);
+        head.next.next.next.next.next = head.next.next;
+
+        ListNode node = detectCycle(head);
+    }
+
+    public static List<Integer> countingSort(List<Integer> arr) {
+        // Write your code here
+        int[] counts = new int[arr.size()];
+        for (Integer element : arr) {
+            counts[element]++;
+        }
+
+        List<Integer> results = new ArrayList<>();
+        for (int count : counts) {
+            results.add(count);
+        }
+        return results;
+    }
 
     public static int diagonalDifference(List<List<Integer>> arr) {
         // Write your code here
@@ -38,8 +169,7 @@ public class Solution {
     public static int lonelyinteger(List<Integer> a) {
         // Write your code here
         int[] counts = new int[101];
-        for (int element : a
-        ) {
+        for (int element : a) {
             counts[element]++;
         }
 
@@ -139,27 +269,49 @@ public class Solution {
         System.out.println(sb.toString());
     }
 
-    public static void main(String[] args) {
-
-        List<List<Integer>> matrix = new ArrayList<>();
-        List<Integer> listTemp1 = new ArrayList<>();
-        listTemp1.add(11);
-        listTemp1.add(2);
-        listTemp1.add(4);
-        matrix.add(listTemp1);
-
-        List<Integer> listTemp2 = new ArrayList<>();
-        listTemp2.add(4);
-        listTemp2.add(5);
-        listTemp2.add(6);
-        matrix.add(listTemp2);
-
-        List<Integer> listTemp3 = new ArrayList<>();
-        listTemp3.add(10);
-        listTemp3.add(8);
-        listTemp3.add(-12);
-        matrix.add(listTemp3);
-
-        System.out.println(diagonalDifference(matrix));
+    public static ListNode middleNode(ListNode head) {
+        int size = ListNodeUtil.size(head);
+        int middle = size / 2;
+        int index = 0;
+        while (head != null) {
+            if (index == middle) {
+                return head;
+            }
+            index++;
+            head = head.next;
+        }
+        return null;
     }
+
+    public static ListNode detectCycle(ListNode head) {
+        if (head == null) {
+            return head;
+        }
+        ListNode tortoise = head;
+        ListNode hare = head;
+
+        while (true) {
+
+            tortoise = tortoise.next;
+            hare = hare.next;
+            if (hare != null) {
+                hare = hare.next;
+            }
+            if (tortoise == null || hare == null) {
+                return null;
+            }
+            if (hare == tortoise) {
+                break;
+            }
+        }
+
+        hare = head;
+        while (hare != tortoise) {
+            hare = hare.next;
+            tortoise = tortoise.next;
+        }
+
+        return hare;
+    }
+
 }
